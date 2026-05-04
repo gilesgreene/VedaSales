@@ -10,11 +10,11 @@ export default function SignInPage() {
         <SignIn 
           appearance={{
             elements: {
-              formButtonPrimary: "vs-btn-primary w-full !shadow-none",
-              card: "vs-card border-none bg-card shadow-2xl",
-              headerTitle: "text-[var(--vs-text)] font-bold",
-              headerSubtitle: "text-[var(--vs-text-muted)]",
-              socialButtonsBlockButton: "vs-btn-ghost border-border hover:bg-secondary transition-all",
+              formButtonPrimary: "sl-btn-primary w-full !shadow-none",
+              card: "sl-card border-none bg-card shadow-2xl",
+              headerTitle: "text-[var(--sl-text)] font-bold",
+              headerSubtitle: "text-[var(--sl-text-muted)]",
+              socialButtonsBlockButton: "sl-btn-ghost border-border hover:bg-secondary transition-all",
               dividerLine: "bg-border",
               dividerText: "text-muted-foreground",
               footerActionLink: "text-primary hover:text-primary/80 font-semibold",

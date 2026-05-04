@@ -17,7 +17,7 @@
   <circle cx="652" cy="155" r="14" fill="#4EEBC0" opacity="0.95"/>
   <circle cx="652" cy="155" r="7" fill="#0B0F1A"/>
   <!-- Wordmark -->
-  <text x="600" y="336" font-family="'Sora', 'Helvetica Neue', sans-serif" font-weight="700" font-size="72" letter-spacing="-2" fill="#FFFFFF" text-anchor="middle">Veda<tspan fill="#4EEBC0">Sales</tspan></text>
+  <text x="600" y="336" font-family="'Sora', 'Helvetica Neue', sans-serif" font-weight="700" font-size="72" letter-spacing="-2" fill="#FFFFFF" text-anchor="middle">Sel<tspan fill="#4EEBC0">va</tspan></text>
   <!-- Tagline -->
   <text x="600" y="390" font-family="'DM Mono', 'Courier New', monospace" font-weight="400" font-size="18" letter-spacing="6" fill="#4EEBC0" text-anchor="middle" opacity="0.8">ECOMMERCE INTELLIGENCE</text>
   <!-- Bottom descriptor -->

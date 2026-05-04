@@ -38,7 +38,7 @@ const steps = [
   {
     id: 3,
     title: "What's your main goal?",
-    description: "How can VedaSales best help you today?",
+    description: "How can Selva best help you today?",
     options: [
       { id: "find", label: "Find winning products" },
       { id: "validate", label: "Validate an idea" },
@@ -96,20 +96,25 @@ export default function OnboardingPage() {
     setLoading(true);
     
     try {
-      const { error } = await supabase.from('users').upsert({
-        clerk_id: user.id,
-        email: user.primaryEmailAddress?.emailAddress,
-        seller_type: selections.sellerType,
-        categories: selections.categories,
-        goal: selections.goal,
-        plan: 'free'
+      const response = await fetch('/api/user/setup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          seller_type: selections.sellerType,
+          categories: selections.categories,
+          goal: selections.goal,
+        }),
       });
 
-      if (error) throw error;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to save preferences');
+      }
+
       router.push('/dashboard');
-    } catch (err) {
+    } catch (err: any) {
       console.error("Error saving onboarding data:", err);
-      alert("Failed to save preferences. Please try again.");
+      alert(err.message || "Failed to save preferences. Please try again.");
     } finally {
       setLoading(false);
     }

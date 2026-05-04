@@ -1,5 +1,5 @@
 {
-  "name": "vedasales",
+  "name": "selva",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,7 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.92.0",
     "@clerk/nextjs": "^7.3.0",
     "@google/generative-ai": "^0.24.1",
     "@stripe/stripe-js": "^9.4.0",

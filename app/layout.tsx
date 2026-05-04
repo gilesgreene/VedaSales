@@ -4,19 +4,19 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 
 const sora = Sora({
-  variable: "--vs-font-sans",
+  variable: "--sl-font-sans",
   subsets: ["latin"],
   weight: ["300", "400", "600", "700"],
 });
 
 const dmMono = DM_Mono({
-  variable: "--vs-font-mono",
+  variable: "--sl-font-mono",
   subsets: ["latin"],
   weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
-  title: "VedaSales — Ecommerce Intelligence",
+  title: "Selva — Ecommerce Intelligence",
   description: "Find winning products before they peak with multi-source trend intelligence.",
   icons: {
     icon: "/icon.svg",

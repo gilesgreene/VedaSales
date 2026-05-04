@@ -12,6 +12,8 @@ export default function DashboardPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [discovering, setDiscovering] = useState(false);
+  const [discoveryStep, setDiscoveryStep] = useState("");
   const [metrics, setMetrics] = useState({
     trendingCount: 0,
     risingKeywords: 0,
@@ -30,16 +32,16 @@ export default function DashboardPage() {
   }, [isLoaded, user]);
 
   const checkOnboarding = async () => {
-    if (!user) return;
-    
-    const { data, error } = await supabase
-      .from('users')
-      .select('seller_type')
-      .eq('clerk_id', user.id)
-      .single();
-
-    if (error || !data || !data.seller_type) {
-      router.push('/onboarding');
+    try {
+      const response = await fetch('/api/user/status');
+      if (response.ok) {
+        const data = await response.json();
+        if (!data.onboardingComplete) {
+          router.push('/onboarding');
+        }
+      }
+    } catch (err) {
+      console.error("Error checking onboarding status:", err);
     }
   };
 
@@ -49,7 +51,7 @@ export default function DashboardPage() {
       const { data, error } = await supabase
         .from('products')
         .select('*')
-        .order('trend_score', { ascending: false })
+        .order('last_refreshed', { ascending: false })
         .limit(20);
 
       if (error) throw error;
@@ -76,6 +78,49 @@ export default function DashboardPage() {
     }
   };
 
+  const handleDiscover = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+
+    setDiscovering(true);
+    setDiscoveryStep("Harvesting signals from 4 sources...");
+    
+    try {
+      const response = await fetch(`/api/refresh-trends?keyword=${encodeURIComponent(searchQuery)}`);
+      if (!response.ok) throw new Error("Failed to discover trend");
+      
+      setDiscoveryStep("Analyzing sentiment and calculating score...");
+      const result = await response.json();
+      
+      if (result.success) {
+        setSearchQuery("");
+        fetchProducts(); // Refresh list to show new trend
+      }
+    } catch (err) {
+      console.error("Discovery error:", err);
+      alert("Failed to analyze trend. Please check your API keys.");
+    } finally {
+      setDiscovering(false);
+      setDiscoveryStep("");
+    }
+  };
+
+  const [seeding, setSeeding] = useState(false);
+
+  const handleSeed = async () => {
+    setSeeding(true);
+    try {
+      const response = await fetch('/api/seed');
+      if (response.ok) {
+        await fetchProducts();
+      }
+    } catch (err) {
+      console.error("Seeding error:", err);
+    } finally {
+      setSeeding(false);
+    }
+  };
+
   const filteredProducts = products.filter(p => 
     p.keyword.toLowerCase().includes(searchQuery.toLowerCase()) ||
     p.category.toLowerCase().includes(searchQuery.toLowerCase())
@@ -87,18 +132,27 @@ export default function DashboardPage() {
       <header className="border-b border-border bg-card/50 backdrop-blur-md sticky top-0 z-40 px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-6 flex-1">
           <Link href="/dashboard" className="flex items-center shrink-0">
-            <img src="/logo-dark.svg" alt="VedaSales" className="h-10 w-auto" />
+            <img src="/logo-dark.svg" alt="Selva" className="h-10 w-auto" />
           </Link>
-          <div className="relative w-full max-w-md">
+          <form onSubmit={handleDiscover} className="relative w-full max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input 
               type="text" 
-              placeholder="Search trending products..."
+              placeholder="Search or discover new trend..."
               className="w-full bg-secondary/50 border border-border rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-          </div>
+            {searchQuery && !products.some(p => p.keyword.toLowerCase() === searchQuery.toLowerCase()) && (
+              <button 
+                type="submit"
+                disabled={discovering}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold bg-primary text-primary-foreground px-2 py-1 rounded-md hover:opacity-90 disabled:opacity-50"
+              >
+                {discovering ? "DISCOVERING..." : "DISCOVER"}
+              </button>
+            )}
+          </form>
         </div>
         <div className="flex items-center gap-4">
           <button 
@@ -118,27 +172,40 @@ export default function DashboardPage() {
         {/* Metrics Grid */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {[
-            { label: "Trending Today", value: metrics.trendingCount.toString(), icon: <TrendingUp className="w-4 h-4" />, color: "text-[var(--vs-accent)]" },
-            { label: "Rising Keywords", value: metrics.risingKeywords.toString(), icon: <ArrowUpRight className="w-4 h-4" />, color: "text-[var(--vs-blue)]" },
-            { label: "Top Category", value: metrics.topCategory, icon: <Users className="w-4 h-4" />, color: "text-[var(--vs-purple)]" },
-            { label: "Data Refresh", value: metrics.lastRefresh, icon: <RefreshCw className="w-4 h-4" />, color: "text-[var(--vs-amber)]" },
+            { label: "Trending Today", value: metrics.trendingCount.toString(), icon: <TrendingUp className="w-4 h-4" />, color: "text-[var(--sl-accent)]" },
+            { label: "Rising Keywords", value: metrics.risingKeywords.toString(), icon: <ArrowUpRight className="w-4 h-4" />, color: "text-[var(--sl-blue)]" },
+            { label: "Top Category", value: metrics.topCategory, icon: <Users className="w-4 h-4" />, color: "text-[var(--sl-purple)]" },
+            { label: "Data Refresh", value: metrics.lastRefresh, icon: <RefreshCw className="w-4 h-4" />, color: "text-[var(--sl-amber)]" },
           ].map((metric, i) => (
-            <div key={i} className="vs-metric">
+            <div key={i} className="sl-metric">
               <div className="flex items-center justify-between mb-1.5">
-                <span className="vs-metric-label">{metric.label}</span>
+                <span className="sl-metric-label">{metric.label}</span>
                 <div className={`${metric.color}`}>{metric.icon}</div>
               </div>
-              <div className="vs-metric-value">{metric.value}</div>
+              <div className="sl-metric-value">{metric.value}</div>
             </div>
           ))}
         </div>
+
+
+        {discovering && (
+          <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4 flex items-center gap-4 animate-in fade-in slide-in-from-top-4 duration-500">
+            <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+              <RefreshCw className="w-5 h-5 text-primary animate-spin" />
+            </div>
+            <div>
+              <p className="text-sm font-bold">Discovering "{searchQuery}"</p>
+              <p className="text-xs text-muted-foreground">{discoveryStep}</p>
+            </div>
+          </div>
+        )}
 
         {/* Dashboard Feed Area */}
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold tracking-tight">Trending Products Feed</h2>
             <div className="flex items-center gap-2">
-              <button className="vs-btn-ghost px-3 py-1.5 flex items-center gap-2 text-xs">
+              <button className="sl-btn-ghost px-3 py-1.5 flex items-center gap-2 text-xs">
                 <Filter className="w-3 h-3" /> Filter
               </button>
             </div>
@@ -157,7 +224,17 @@ export default function DashboardPage() {
               </div>
               <div className="space-y-1">
                 <h3 className="font-bold">No products found</h3>
-                <p className="text-sm text-muted-foreground">Try adjusting your search or refresh the data.</p>
+                <p className="text-sm text-muted-foreground mb-6">Try discovering a new trend or seed initial data.</p>
+                {products.length === 0 && (
+                  <button 
+                    onClick={handleSeed}
+                    disabled={seeding}
+                    className="sl-btn-primary mx-auto flex items-center gap-2"
+                  >
+                    {seeding ? <RefreshCw className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
+                    {seeding ? "Seeding..." : "Seed Initial Trends"}
+                  </button>
+                )}
               </div>
             </div>
           ) : (
@@ -166,13 +243,13 @@ export default function DashboardPage() {
                 <Link 
                   href={`/product/${product.id}`}
                   key={product.id} 
-                  className="vs-card flex flex-col group p-0 overflow-hidden"
+                  className="sl-card flex flex-col group p-0 overflow-hidden"
                 >
                   <div className="aspect-square bg-secondary/30 relative flex items-center justify-center p-8">
                     <div className="w-full h-full rounded-xl bg-gradient-to-br from-primary/5 to-violet-500/5 flex items-center justify-center">
                       <TrendingUp className="w-12 h-12 text-primary opacity-20" />
                     </div>
-                    <div className="absolute top-3 right-3 vs-score-badge flex items-center gap-1">
+                    <div className="absolute top-3 right-3 sl-score-badge flex items-center gap-1">
                       <span>{product.trend_score}</span>
                       <TrendingUp className="w-3 h-3" />
                     </div>
@@ -181,7 +258,7 @@ export default function DashboardPage() {
                     <div className="space-y-1">
                       <div className="flex items-center justify-between">
                         <span className="font-mono text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">{product.category || "General"}</span>
-                        {product.trend_direction === 'rising' ? <span className="vs-tag-rising">RISING</span> : product.trend_direction === 'declining' ? <ArrowDownRight className="w-3 h-3 text-[var(--vs-red)]" /> : <Minus className="w-3 h-3 text-[var(--vs-amber)]" />}
+                        {product.trend_direction === 'rising' ? <span className="sl-tag-rising">RISING</span> : product.trend_direction === 'declining' ? <ArrowDownRight className="w-3 h-3 text-[var(--sl-red)]" /> : <Minus className="w-3 h-3 text-[var(--sl-amber)]" />}
                       </div>
                       <h3 className="font-bold leading-tight group-hover:text-primary transition-colors line-clamp-1">{product.keyword}</h3>
                     </div>

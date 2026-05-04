@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
-import { searchRedditPosts, searchEtsyListings, searchYouTubeVideos } from "@/lib/api-sources";
+import { searchRedditPosts, searchEtsyListings, searchYouTubeVideos, getGoogleTrendsScore } from "@/lib/api-sources";
 import { calculateTrendScore, getTrendDirection } from "@/lib/trends-logic";
 import { generateAISummary } from "@/lib/ai-service";
 
@@ -17,20 +17,19 @@ export async function GET(request: Request) {
 
   try {
     // 1. Fetch data from all sources in parallel
-    const [redditPosts, etsyListings, youtubeVideos] = await Promise.all([
+    const [redditPosts, etsyListings, youtubeVideos, gTrendsScore] = await Promise.all([
       searchRedditPosts(keyword),
       searchEtsyListings(keyword),
-      searchYouTubeVideos(keyword)
+      searchYouTubeVideos(keyword),
+      getGoogleTrendsScore(keyword)
     ]);
 
     // 2. Prepare signals for trend score
-    // In a real app, you'd calculate growth/velocity. 
-    // Here we use absolute numbers as a proxy for the MVP.
     const signals = {
-      googleTrendsScore: Math.floor(Math.random() * 60) + 40, // Mocking Google Trends for now
+      googleTrendsScore: gTrendsScore,
       redditMentionsPerWeek: redditPosts.length * 2,
       youtubeViewsRecent: youtubeVideos.reduce((acc: number, v: any) => acc + parseInt(v.statistics?.viewCount || 0), 0),
-      etsyListingGrowth: Math.floor(Math.random() * 30) // Mocking growth
+      etsyListingGrowth: Math.floor(Math.random() * 30) // Mocking growth as velocity is harder to compute in one pass
     };
 
     const newScore = calculateTrendScore(signals);

@@ -1,4 +1,4 @@
-# VedaSales Brand Assets
+# Selva Brand Assets
 
 ## Files Included
 
@@ -48,7 +48,7 @@ Copy the entire contents of `brand-tokens.css` into your `globals.css`.
 ### 3. Add favicons to app/layout.tsx metadata
 ```tsx
 export const metadata = {
-  title: 'VedaSales — Ecommerce Intelligence',
+  title: 'Selva — Ecommerce Intelligence',
   description: 'Find winning products before they peak.',
   icons: {
     icon: [
@@ -83,7 +83,7 @@ import Image from 'next/image'
 export function Navbar() {
   return (
     <nav>
-      <Image src="/logo-dark.svg" alt="VedaSales" width={160} height={38} />
+      <Image src="/logo-dark.svg" alt="Selva" width={160} height={38} />
     </nav>
   )
 }

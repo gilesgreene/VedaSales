@@ -1,5 +1,5 @@
 /* ================================================
-   VedaSales — Brand Design Tokens
+   Selva — Brand Design Tokens
    Copy this into your globals.css
    ================================================ */
 
@@ -8,42 +8,42 @@
 
 :root {
   /* ── Core Backgrounds ── */
-  --vs-bg:            #0B0F1A;   /* Page background */
-  --vs-surface:       #0D1B2A;   /* Cards, panels */
-  --vs-surface-2:     #112236;   /* Hover states, nested surfaces */
-  --vs-surface-3:     #1A2F45;   /* Active states */
+  --sl-bg:            #0B0F1A;   /* Page background */
+  --sl-surface:       #0D1B2A;   /* Cards, panels */
+  --sl-surface-2:     #112236;   /* Hover states, nested surfaces */
+  --sl-surface-3:     #1A2F45;   /* Active states */
 
   /* ── Primary Accent (Veda Green) ── */
-  --vs-accent:        #4EEBC0;   /* Primary accent — buttons, highlights */
-  --vs-accent-dim:    #1ECFA0;   /* CTA buttons, interactive elements */
-  --vs-accent-dark:   #0A7B5C;   /* Light mode accent / darker tint */
-  --vs-accent-glow:   rgba(78, 235, 192, 0.12); /* Glow / border highlight */
+  --sl-accent:        #4EEBC0;   /* Primary accent — buttons, highlights */
+  --sl-accent-dim:    #1ECFA0;   /* CTA buttons, interactive elements */
+  --sl-accent-dark:   #0A7B5C;   /* Light mode accent / darker tint */
+  --sl-accent-glow:   rgba(78, 235, 192, 0.12); /* Glow / border highlight */
 
   /* ── Data Colors ── */
-  --vs-blue:          #5B8DEF;   /* Charts, links, info */
-  --vs-amber:         #F5A623;   /* Rising trends, warnings */
-  --vs-red:           #F06060;   /* Declining trends, errors */
-  --vs-purple:        #A78BFA;   /* Secondary data series */
+  --sl-blue:          #5B8DEF;   /* Charts, links, info */
+  --sl-amber:         #F5A623;   /* Rising trends, warnings */
+  --sl-red:           #F06060;   /* Declining trends, errors */
+  --sl-purple:        #A78BFA;   /* Secondary data series */
 
   /* ── Text ── */
-  --vs-text:          #E5E9F5;   /* Primary text */
-  --vs-text-muted:    #7B8FB7;   /* Secondary / muted text */
-  --vs-text-dim:      #3D5070;   /* Placeholder / disabled */
+  --sl-text:          #E5E9F5;   /* Primary text */
+  --sl-text-muted:    #7B8FB7;   /* Secondary / muted text */
+  --sl-text-dim:      #3D5070;   /* Placeholder / disabled */
 
   /* ── Borders ── */
-  --vs-border:        rgba(78, 235, 192, 0.12);  /* Default border */
-  --vs-border-strong: rgba(78, 235, 192, 0.25);  /* Emphasized border */
-  --vs-border-subtle: rgba(255, 255, 255, 0.06); /* Subtle dividers */
+  --sl-border:        rgba(78, 235, 192, 0.12);  /* Default border */
+  --sl-border-strong: rgba(78, 235, 192, 0.25);  /* Emphasized border */
+  --sl-border-subtle: rgba(255, 255, 255, 0.06); /* Subtle dividers */
 
   /* ── Typography ── */
-  --vs-font-sans:     'Sora', 'Helvetica Neue', sans-serif;
-  --vs-font-mono:     'DM Mono', 'Courier New', monospace;
+  --sl-font-sans:     'Sora', 'Helvetica Neue', sans-serif;
+  --sl-font-mono:     'DM Mono', 'Courier New', monospace;
 
   /* ── Spacing Scale ── */
-  --vs-radius-sm:     6px;
-  --vs-radius-md:     10px;
-  --vs-radius-lg:     14px;
-  --vs-radius-xl:     20px;
+  --sl-radius-sm:     6px;
+  --sl-radius-md:     10px;
+  --sl-radius-lg:     14px;
+  --sl-radius-xl:     20px;
 }
 
 
@@ -52,93 +52,93 @@
    ================================================ */
 
 /* Primary Button */
-.vs-btn-primary {
-  background: var(--vs-accent-dim);
+.sl-btn-primary {
+  background: var(--sl-accent-dim);
   color: #0B0F1A;
-  font-family: var(--vs-font-sans);
+  font-family: var(--sl-font-sans);
   font-weight: 600;
   font-size: 14px;
   padding: 10px 20px;
-  border-radius: var(--vs-radius-md);
+  border-radius: var(--sl-radius-md);
   border: none;
   cursor: pointer;
   transition: background 0.15s ease;
 }
-.vs-btn-primary:hover { background: var(--vs-accent); }
+.sl-btn-primary:hover { background: var(--sl-accent); }
 
 /* Ghost Button */
-.vs-btn-ghost {
+.sl-btn-ghost {
   background: transparent;
-  color: var(--vs-accent);
-  font-family: var(--vs-font-sans);
+  color: var(--sl-accent);
+  font-family: var(--sl-font-sans);
   font-weight: 600;
   font-size: 14px;
   padding: 10px 20px;
-  border-radius: var(--vs-radius-md);
-  border: 1px solid var(--vs-border-strong);
+  border-radius: var(--sl-radius-md);
+  border: 1px solid var(--sl-border-strong);
   cursor: pointer;
   transition: background 0.15s ease, border-color 0.15s ease;
 }
-.vs-btn-ghost:hover {
-  background: var(--vs-accent-glow);
-  border-color: var(--vs-accent);
+.sl-btn-ghost:hover {
+  background: var(--sl-accent-glow);
+  border-color: var(--sl-accent);
 }
 
 /* Card */
-.vs-card {
-  background: var(--vs-surface);
-  border: 1px solid var(--vs-border);
-  border-radius: var(--vs-radius-lg);
+.sl-card {
+  background: var(--sl-surface);
+  border: 1px solid var(--sl-border);
+  border-radius: var(--sl-radius-lg);
   padding: 1.25rem;
 }
-.vs-card:hover {
-  border-color: var(--vs-border-strong);
-  background: var(--vs-surface-2);
+.sl-card:hover {
+  border-color: var(--sl-border-strong);
+  background: var(--sl-surface-2);
 }
 
 /* Trend Score Badge */
-.vs-score-badge {
-  font-family: var(--vs-font-mono);
+.sl-score-badge {
+  font-family: var(--sl-font-mono);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.05em;
   padding: 3px 8px;
   border-radius: 999px;
-  background: var(--vs-accent-glow);
-  color: var(--vs-accent);
-  border: 1px solid var(--vs-border);
+  background: var(--sl-accent-glow);
+  color: var(--sl-accent);
+  border: 1px solid var(--sl-border);
 }
 
 /* Rising tag */
-.vs-tag-rising {
-  font-family: var(--vs-font-mono);
+.sl-tag-rising {
+  font-family: var(--sl-font-mono);
   font-size: 10px;
   padding: 2px 8px;
   border-radius: 999px;
   background: rgba(245, 166, 35, 0.1);
-  color: var(--vs-amber);
+  color: var(--sl-amber);
   border: 1px solid rgba(245, 166, 35, 0.25);
 }
 
 /* Metric card */
-.vs-metric {
-  background: var(--vs-surface);
-  border: 1px solid var(--vs-border);
-  border-radius: var(--vs-radius-md);
+.sl-metric {
+  background: var(--sl-surface);
+  border: 1px solid var(--sl-border);
+  border-radius: var(--sl-radius-md);
   padding: 1rem;
 }
-.vs-metric-label {
-  font-family: var(--vs-font-mono);
+.sl-metric-label {
+  font-family: var(--sl-font-mono);
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--vs-text-muted);
+  color: var(--sl-text-muted);
   margin-bottom: 6px;
 }
-.vs-metric-value {
-  font-family: var(--vs-font-sans);
+.sl-metric-value {
+  font-family: var(--sl-font-sans);
   font-weight: 700;
   font-size: 28px;
-  color: var(--vs-text);
+  color: var(--sl-text);
   letter-spacing: -0.03em;
 }

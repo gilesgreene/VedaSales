@@ -106,7 +106,7 @@ export default function ProductDetailPage() {
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div className="flex items-center">
-            <img src="/logo-dark.svg" alt="VedaSales" className="h-10 w-auto" />
+            <img src="/logo-dark.svg" alt="Selva" className="h-10 w-auto" />
             <div className="flex items-center gap-2 text-sm text-muted-foreground ml-6 border-l border-border pl-6">
               <Link href="/dashboard" className="hover:text-primary transition-colors">Dashboard</Link>
               <ChevronRight className="w-4 h-4" />
@@ -132,10 +132,10 @@ export default function ProductDetailPage() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-4">
               <div className="flex items-center gap-3">
-                <span className="vs-score-badge">
+                <span className="sl-score-badge">
                   {product.category || "General"}
                 </span>
-                <div className={`flex items-center gap-1 font-bold text-sm ${product.trend_direction === 'rising' ? 'text-[var(--vs-accent)]' : 'text-[var(--vs-amber)]'}`}>
+                <div className={`flex items-center gap-1 font-bold text-sm ${product.trend_direction === 'rising' ? 'text-[var(--sl-accent)]' : 'text-[var(--sl-amber)]'}`}>
                   {product.trend_direction === 'rising' ? <TrendingUp className="w-4 h-4" /> : <Info className="w-4 h-4" />}
                   {product.trend_direction === 'rising' ? 'High Growth' : 'Steady Trend'}
                 </div>
@@ -155,7 +155,7 @@ export default function ProductDetailPage() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Chart Card */}
-            <div className="vs-card space-y-6">
+            <div className="sl-card space-y-6">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-bold flex items-center gap-2">
                   <LineChart className="w-5 h-5 text-primary" />
@@ -169,19 +169,19 @@ export default function ProductDetailPage() {
                 {chartData.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <ReChart data={chartData}>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--vs-border)" />
-                      <XAxis dataKey="date" stroke="var(--vs-text-dim)" fontSize={11} tickLine={false} axisLine={false} />
-                      <YAxis stroke="var(--vs-text-dim)" fontSize={11} tickLine={false} axisLine={false} />
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--sl-border)" />
+                      <XAxis dataKey="date" stroke="var(--sl-text-dim)" fontSize={11} tickLine={false} axisLine={false} />
+                      <YAxis stroke="var(--sl-text-dim)" fontSize={11} tickLine={false} axisLine={false} />
                       <Tooltip 
-                        contentStyle={{ backgroundColor: 'var(--vs-surface)', border: '1px solid var(--vs-border)', borderRadius: '12px' }} 
-                        itemStyle={{ color: 'var(--vs-accent)' }} 
+                        contentStyle={{ backgroundColor: 'var(--sl-surface)', border: '1px solid var(--sl-border)', borderRadius: '12px' }} 
+                        itemStyle={{ color: 'var(--sl-accent)' }} 
                       />
                       <Line 
                         type="monotone" 
                         dataKey="value" 
-                        stroke="var(--vs-accent)" 
+                        stroke="var(--sl-accent)" 
                         strokeWidth={3} 
-                        dot={{ fill: 'var(--vs-accent)', strokeWidth: 2, r: 4 }} 
+                        dot={{ fill: 'var(--sl-accent)', strokeWidth: 2, r: 4 }} 
                         activeDot={{ r: 6, strokeWidth: 0 }} 
                       />
                     </ReChart>
@@ -199,16 +199,16 @@ export default function ProductDetailPage() {
               <h3 className="text-xl font-bold">Source Intelligence</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {[
-                  { label: "Reddit Mentions", value: product.reddit_mentions.toString(), sub: "Last 30 days", icon: <MessageCircle className="w-5 h-5 text-[var(--vs-amber)]" /> },
-                  { label: "Etsy Listings", value: product.etsy_listing_count.toString(), sub: `Range: $${product.price_min}+$`, icon: <ShoppingBag className="w-5 h-5 text-[var(--vs-accent)]" /> },
-                  { label: "YouTube Videos", value: product.youtube_video_count.toString(), sub: "Recent reviews", icon: <Play className="w-5 h-5 text-[var(--vs-red)]" /> },
+                  { label: "Reddit Mentions", value: product.reddit_mentions.toString(), sub: "Last 30 days", icon: <MessageCircle className="w-5 h-5 text-[var(--sl-amber)]" /> },
+                  { label: "Etsy Listings", value: product.etsy_listing_count.toString(), sub: `Range: $${product.price_min}+$`, icon: <ShoppingBag className="w-5 h-5 text-[var(--sl-accent)]" /> },
+                  { label: "YouTube Videos", value: product.youtube_video_count.toString(), sub: "Recent reviews", icon: <Play className="w-5 h-5 text-[var(--sl-red)]" /> },
                 ].map((stat, i) => (
-                  <div key={i} className="vs-metric">
+                  <div key={i} className="sl-metric">
                     <div className="flex items-center gap-2 mb-2">
                       {stat.icon}
-                      <span className="vs-metric-label mb-0">{stat.label}</span>
+                      <span className="sl-metric-label mb-0">{stat.label}</span>
                     </div>
-                    <div className="vs-metric-value text-2xl">{stat.value}</div>
+                    <div className="sl-metric-value text-2xl">{stat.value}</div>
                     <div className="font-mono text-[9px] text-muted-foreground mt-1 tracking-tight uppercase">{stat.sub}</div>
                   </div>
                 ))}
@@ -232,13 +232,13 @@ export default function ProductDetailPage() {
               </p>
               <div className="pt-2">
                 <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-1 rounded-full uppercase tracking-wider">
-                  Claude 3.5 Analysis
+                  AI Intelligence
                 </span>
               </div>
             </div>
 
             {/* Pricing Breakdown */}
-            <div className="vs-card space-y-4">
+            <div className="sl-card space-y-4">
               <h3 className="text-lg font-bold">Market Context</h3>
               <div className="space-y-3">
                 <div className="flex justify-between items-center text-sm">
@@ -252,7 +252,7 @@ export default function ProductDetailPage() {
               </div>
               <button 
                 onClick={() => setIsSaved(!isSaved)}
-                className={`w-full mt-4 vs-btn-primary ${isSaved ? 'vs-btn-ghost bg-[var(--vs-surface-2)] text-[var(--vs-text)]' : ''} flex items-center justify-center gap-2`}
+                className={`w-full mt-4 sl-btn-primary ${isSaved ? 'sl-btn-ghost bg-[var(--sl-surface-2)] text-[var(--sl-text)]' : ''} flex items-center justify-center gap-2`}
               >
                 {isSaved ? 'In Watchlist' : 'Save to Watchlist'} <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`} />
               </button>
