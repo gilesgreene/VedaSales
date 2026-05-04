@@ -4,6 +4,8 @@ import { searchRedditPosts, searchEtsyListings, searchYouTubeVideos } from "@/li
 import { calculateTrendScore, getTrendDirection } from "@/lib/trends-logic";
 import { generateAISummary } from "@/lib/ai-service";
 
+export const dynamic = "force-dynamic";
+
 // This route would be called by Vercel Cron or a manual trigger
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

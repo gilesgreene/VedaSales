@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 
+export const dynamic = "force-dynamic";
+
 const INITIAL_KEYWORDS = [
   "Ergonomic Pet Bed", "Modular Desk Organizer", "LED Facial Mask", 
   "Weighted Blanket", "Hydroponic Kit", "Smart Bird Feeder",
