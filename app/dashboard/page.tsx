@@ -2,6 +2,8 @@
 
 import { TrendingUp, Users, Search, RefreshCw, Filter, ArrowUpRight, ArrowDownRight, Minus, ExternalLink, ArrowRight as ArrowRightIcon } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { Product } from "@/types";
 import Link from "next/link";
@@ -16,10 +18,30 @@ export default function DashboardPage() {
     topCategory: "N/A",
     lastRefresh: "N/A"
   });
+  const router = useRouter();
+
+  const { user, isLoaded } = useUser();
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    if (isLoaded && user) {
+      checkOnboarding();
+      fetchProducts();
+    }
+  }, [isLoaded, user]);
+
+  const checkOnboarding = async () => {
+    if (!user) return;
+    
+    const { data, error } = await supabase
+      .from('users')
+      .select('seller_type')
+      .eq('clerk_id', user.id)
+      .single();
+
+    if (error || !data || !data.seller_type) {
+      router.push('/onboarding');
+    }
+  };
 
   const fetchProducts = async () => {
     setLoading(true);
